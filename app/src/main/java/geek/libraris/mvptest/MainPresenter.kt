@@ -20,4 +20,4 @@ class MainPresenter(val view: MainView) {
         view.setButtonText3(nextValue.toString())
     }
 }
-
+//такое вот задание
