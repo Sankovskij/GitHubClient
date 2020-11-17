@@ -6,6 +6,8 @@ import geek.libraris.mvptest.model.GithubUsersRepo
 import geek.libraris.mvptest.presenter.list.IUserListPresenter
 import geek.libraris.mvptest.views.UserItemView
 import geek.libraris.mvptest.views.UsersView
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 
@@ -39,7 +41,7 @@ class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router): MvpPre
 
     fun loadData() {
         val users =  usersRepo.getUsers()
-        usersListPresenter.users.addAll(users)
+        users.subscribe(githubUserObserver)
         viewState.updateList()
     }
 
@@ -48,7 +50,33 @@ class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router): MvpPre
         return true
     }
 
+    val githubUserObserver = object : Observer<GithubUser> {
+        var disposable: Disposable? = null
+
+        override fun onComplete() {
+            println("onComplete")
+        }
+
+        override fun onSubscribe(d: Disposable?) {
+            disposable = d
+            println("onSubscribe")
+        }
+
+        override fun onNext(s: GithubUser?) {
+            if (s != null) {
+                usersListPresenter.users.add(s)
+            }
+        }
+
+        override fun onError(e: Throwable?) {
+            println("onError: ${e?.message}")
+        }
+    }
+
+
 }
+
+
 
 
 //такое вот задание
