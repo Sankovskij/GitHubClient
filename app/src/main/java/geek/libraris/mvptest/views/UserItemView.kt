@@ -4,4 +4,5 @@ import geek.libraris.mvptest.presenter.list.UIItemView
 
 interface UserItemView : UIItemView {
         fun setLogin(text: String)
+        fun loadAvatar(url: String)
 }

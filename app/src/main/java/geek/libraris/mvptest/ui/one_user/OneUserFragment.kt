@@ -20,10 +20,10 @@ import moxy.ktx.moxyPresenter
 
 class OneUserFragment : MvpAppCompatFragment(), OneUserView, BackButtonListener {
     companion object {
-        fun newInstance(data: Int): OneUserFragment {
+        fun newInstance(data: GithubUser): OneUserFragment {
             val oneUserFragment = OneUserFragment()
             val bundle = Bundle()
-            bundle.putInt("USER" , data)
+            bundle.putParcelable("USER" , data)
             oneUserFragment.arguments = bundle
             return oneUserFragment
         }
@@ -31,8 +31,8 @@ class OneUserFragment : MvpAppCompatFragment(), OneUserView, BackButtonListener 
 
 
 
-
-    val presenter: OneUserPresenter by moxyPresenter { OneUserPresenter(GithubUsersRepo(), App.instance.router, arguments?.getInt("USER")) }
+    val user = arguments?.getParcelable<GithubUser>("USER")
+    val presenter: OneUserPresenter by moxyPresenter { OneUserPresenter(App.instance.router, user) }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
@@ -40,37 +40,8 @@ class OneUserFragment : MvpAppCompatFragment(), OneUserView, BackButtonListener 
 
     override fun init() {
 
-
-       presenter.loadData()?.subscribe(oneUserUserObserver)
     }
-
-
-
 
     override fun backPressed() = presenter.backPressed()
-
-
-    val oneUserUserObserver = object : Observer<GithubUser> {
-        var disposable: Disposable? = null
-
-        override fun onComplete() {
-            println("onComplete")
-        }
-
-        override fun onSubscribe(d: Disposable?) {
-            disposable = d
-            println("onSubscribe")
-        }
-
-        override fun onNext(s: GithubUser?) {
-            if (s != null) {
-                s.let { tv_login.text = it.login }  ?: "Юзер не дошёл до сюда"
-            }
-        }
-
-        override fun onError(e: Throwable?) {
-            println("onError: ${e?.message}")
-        }
-    }
 }
 
