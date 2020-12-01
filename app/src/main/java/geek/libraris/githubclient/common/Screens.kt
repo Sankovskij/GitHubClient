@@ -1,7 +1,7 @@
 package geek.libraris.githubclient.common
 
 import geek.libraris.githubclient.repo_info.ui.RepoInfoInfoFragment
-import geek.libraris.githubclient.repos.model.entity.GithubUserRepo
+import geek.libraris.githubclient.repos.model.entity.GithubRepository
 import geek.libraris.githubclient.users.model.entity.GithubUser
 import geek.libraris.githubclient.repos.ui.ReposFragment
 import geek.libraris.githubclient.users.ui.UsersFragment
@@ -16,7 +16,7 @@ class Screens {
         override fun getFragment() = ReposFragment.newInstance(user)
     }
 
-    class RepoInfoScreen(val user : GithubUser?, val repo : GithubUserRepo?) : SupportAppScreen() {
+    class RepoInfoScreen(val user : GithubUser?, val repo : GithubRepository?) : SupportAppScreen() {
         override fun getFragment() = RepoInfoInfoFragment.newInstance(repo, user)
     }
 }

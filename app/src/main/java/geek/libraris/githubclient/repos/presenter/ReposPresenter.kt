@@ -1,7 +1,7 @@
 package geek.libraris.githubclient.repos.presenter
 
 import geek.libraris.githubclient.common.Screens
-import geek.libraris.githubclient.repos.model.entity.GithubUserRepo
+import geek.libraris.githubclient.repos.model.entity.GithubRepository
 import geek.libraris.githubclient.repos.model.retrofit.IGithubUserRepos
 import geek.libraris.githubclient.repos.presenter.list.IRepoListPresenter
 import geek.libraris.githubclient.repos.presenter.list.RepoItemView
@@ -16,7 +16,7 @@ import ru.terrakok.cicerone.Router
 class ReposPresenter(val mainThreadScheduler: Scheduler, val router: Router, val githubUser: GithubUser?, val reposRepo: IGithubUserRepos) : MvpPresenter<ReposView>()  {
 
     class ReposListPresenter : IRepoListPresenter {
-        val repos = mutableListOf<GithubUserRepo>()
+        val repos = mutableListOf<GithubRepository>()
         override var itemClickListener: ((RepoItemView) -> Unit)? = null
 
         override fun getCount() = repos.size

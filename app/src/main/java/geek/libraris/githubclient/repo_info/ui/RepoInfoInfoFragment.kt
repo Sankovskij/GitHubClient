@@ -11,14 +11,14 @@ import geek.libraris.githubclient.common.BackButtonListener
 import geek.libraris.githubclient.common.glide.GlideImageLoader
 import geek.libraris.githubclient.repo_info.presenter.RepoInfoPresenter
 import geek.libraris.githubclient.repo_info.views.RepoInfoView
-import geek.libraris.githubclient.repos.model.entity.GithubUserRepo
+import geek.libraris.githubclient.repos.model.entity.GithubRepository
 import kotlinx.android.synthetic.main.fragment_repo_info.*
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
 class RepoInfoInfoFragment : MvpAppCompatFragment(), RepoInfoView, BackButtonListener {
     companion object {
-        fun newInstance(repo: GithubUserRepo?, user: GithubUser?): RepoInfoInfoFragment {
+        fun newInstance(repo: GithubRepository?, user: GithubUser?): RepoInfoInfoFragment {
             val repoFragment = RepoInfoInfoFragment()
             val bundle = Bundle()
             bundle.putParcelable("USER" , user)
@@ -37,7 +37,7 @@ class RepoInfoInfoFragment : MvpAppCompatFragment(), RepoInfoView, BackButtonLis
         View.inflate(context, R.layout.fragment_repo_info, null)
 
     override fun init() {
-        val repo = arguments?.getParcelable("REPO") as GithubUserRepo?
+        val repo = arguments?.getParcelable("REPO") as GithubRepository?
         val user = arguments?.getParcelable("USER") as GithubUser?
         val imageLoader = GlideImageLoader()
         login.text = user?.login
