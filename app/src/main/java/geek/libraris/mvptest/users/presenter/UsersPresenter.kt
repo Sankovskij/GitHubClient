@@ -1,0 +1,67 @@
+package geek.libraris.mvptest.users.presenter
+
+import geek.libraris.mvptest.common.Screens
+import geek.libraris.mvptest.users.model.entity.GithubUser
+import geek.libraris.mvptest.users.model.retrofit.IGithubUsersRepo
+import geek.libraris.mvptest.users.presenter.list.IUserListPresenter
+import geek.libraris.mvptest.users.presenter.list.UserUsersItemView
+import geek.libraris.mvptest.users.views.UsersView
+import io.reactivex.rxjava3.core.Scheduler
+import moxy.InjectViewState
+import moxy.MvpPresenter
+import ru.terrakok.cicerone.Router
+
+@InjectViewState
+class UsersPresenter(val mainThreadScheduler: Scheduler, val usersRepo: IGithubUsersRepo, val router: Router): MvpPresenter<UsersView>() {
+
+    class UsersListPresenter : IUserListPresenter {
+        val users = mutableListOf<GithubUser>()
+        override var itemClickListener: ((UserUsersItemView) -> Unit)? = null
+
+        override fun getCount() = users.size
+
+        override fun bindView(view: UserUsersItemView) {
+            val user = users[view.pos]
+            user.login?.let { view.setLogin(it) }
+            user.avatarUrl?.let {view.loadAvatar(it)}
+
+
+
+        }
+    }
+
+    val usersListPresenter = UsersListPresenter()
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        viewState.init()
+        loadData()
+
+        usersListPresenter.itemClickListener = { itemView ->
+            val user = usersListPresenter.users[itemView.pos]
+            router.navigateTo(Screens.ReposScreen(user))
+        }
+
+    }
+
+    fun loadData() {
+        usersRepo.getUsers()
+            .observeOn(mainThreadScheduler)
+            .subscribe({ repos ->
+                usersListPresenter.users.clear()
+                usersListPresenter.users.addAll(repos)
+                viewState.updateList()
+            }, {
+                println("Error: ${it.message}")
+            })
+    }
+
+
+    fun backPressed(): Boolean {
+        router.exit()
+        return true
+    }
+
+}
+
+
