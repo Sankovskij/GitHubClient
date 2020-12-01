@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="geek.libraris.GithubClient">
+    package="geek.libraris.githubclient">
 
     <application
-        android:name="geek.libraris.GithubClient.App"
+        android:name="geek.libraris.githubclient.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mvptest">
-        <activity android:name="geek.libraris.GithubClient.main.ui.MainActivity">
+        <activity android:name="geek.libraris.githubclient.main.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
