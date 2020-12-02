@@ -1,14 +1,17 @@
 package geek.libraris.githubclient.main.ui
 
+import android.content.Context
 import android.os.Bundle
 import geek.libraris.githubclient.main.presenter.MainPresenter
 import geek.libraris.githubclient.R
 import geek.libraris.githubclient.App
 import geek.libraris.githubclient.common.BackButtonListener
+import geek.libraris.githubclient.common.room.Database
 import geek.libraris.githubclient.main.views.MainView
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
+import java.lang.RuntimeException
 
 class MainActivity : MvpAppCompatActivity(), MainView {
 
@@ -20,6 +23,11 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        try {
+            Database.getInstance()
+        } catch (e : RuntimeException) {
+            Database.create(applicationContext)
+        }
     }
 
     override fun onResumeFragments() {

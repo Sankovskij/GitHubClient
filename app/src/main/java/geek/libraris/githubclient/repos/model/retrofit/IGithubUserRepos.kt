@@ -4,5 +4,5 @@ import geek.libraris.githubclient.repos.model.entity.GithubRepository
 import io.reactivex.rxjava3.core.Single
 
 interface IGithubUserRepos {
-    fun getRepos(login: String?)
+    fun getRepos(login: String?): Single<List<GithubRepository>>
 }

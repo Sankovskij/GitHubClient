@@ -1,5 +1,6 @@
 package geek.libraris.githubclient.repos.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,9 @@ import geek.libraris.githubclient.repos.presenter.ReposPresenter
 import geek.libraris.githubclient.repos.views.ReposView
 import geek.libraris.githubclient.App
 import geek.libraris.githubclient.common.BackButtonListener
+import geek.libraris.githubclient.common.network.AndroidNetworkStatus
+import geek.libraris.githubclient.common.room.Database
+import geek.libraris.githubclient.common.room.RoomRepositoriesCache
 import geek.libraris.githubclient.repos.model.retrofit.ReposApiHolder
 import geek.libraris.githubclient.repos.model.retrofit.RetrofitGithubUserRepos
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -33,7 +37,7 @@ class ReposFragment : MvpAppCompatFragment(), ReposView, BackButtonListener {
     val presenter: ReposPresenter by moxyPresenter { ReposPresenter(AndroidSchedulers.mainThread(),
                                                                     App.instance.router,
                                                                     arguments?.getParcelable("USER") as GithubUser?,
-                                                                    RetrofitGithubUserRepos(ReposApiHolder.api)) }
+                                                                    RetrofitGithubUserRepos(ReposApiHolder.api, AndroidNetworkStatus(context), Database.getInstance(), RoomRepositoriesCache())) }
 
     var adapter: ReposRVAdapter? = null
 

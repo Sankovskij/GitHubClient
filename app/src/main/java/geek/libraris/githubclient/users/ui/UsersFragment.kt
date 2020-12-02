@@ -13,6 +13,9 @@ import geek.libraris.githubclient.App
 import geek.libraris.githubclient.common.BackButtonListener
 import geek.libraris.githubclient.users.views.UsersView
 import geek.libraris.githubclient.common.glide.GlideImageLoader
+import geek.libraris.githubclient.common.network.AndroidNetworkStatus
+import geek.libraris.githubclient.common.room.Database
+import geek.libraris.githubclient.common.room.RoomUserCache
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_users.*
 import moxy.MvpAppCompatFragment
@@ -24,7 +27,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     val presenter: UsersPresenter by moxyPresenter { UsersPresenter(AndroidSchedulers.mainThread(), RetrofitGithubUsersRepo(
-        UsersApiHolder.api), App.instance.router)
+        UsersApiHolder.api, AndroidNetworkStatus(context), Database.getInstance(), RoomUserCache()), App.instance.router)
     }
 
 
