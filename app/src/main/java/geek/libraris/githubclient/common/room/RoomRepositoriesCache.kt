@@ -9,7 +9,7 @@ class RoomRepositoriesCache : IRepositoriesCache {
                     ?: throw RuntimeException("No such user in cache")
                 db.repositoryDao.findForUser(roomUser.id).map {
                     GithubRepository(
-                        it.id ?: "",
+                        it.id,
                         it.name ?: "",
                         it.description ?: "",
                         it.size ?: 0,

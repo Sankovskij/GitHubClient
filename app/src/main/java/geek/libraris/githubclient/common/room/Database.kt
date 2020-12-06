@@ -10,8 +10,8 @@ abstract class Database : RoomDatabase() {
     abstract val repositoryDao: RepositoryDao
 
     companion object {
-        private const val DB_NAME = "database.db"
-        private var instance: Database? = null
+        const val DB_NAME = "database.db"
+      /*  private var instance: Database? = null
         fun getInstance() = instance ?: throw RuntimeException("Database has not been created. Please call create(context)")
 
         fun create(context: Context?) {
@@ -19,7 +19,7 @@ abstract class Database : RoomDatabase() {
                 instance = Room.databaseBuilder(context!!, Database::class.java, DB_NAME)
                     .build()
             }
-        }
+        }*/
     }
 }
 

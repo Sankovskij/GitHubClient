@@ -15,11 +15,14 @@ import geek.libraris.githubclient.repos.model.entity.GithubRepository
 import kotlinx.android.synthetic.main.fragment_repo_info.*
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
-class RepoInfoInfoFragment : MvpAppCompatFragment(), RepoInfoView, BackButtonListener {
+class RepoInfoFragment : MvpAppCompatFragment(), RepoInfoView, BackButtonListener {
+
     companion object {
-        fun newInstance(repo: GithubRepository?, user: GithubUser?): RepoInfoInfoFragment {
-            val repoFragment = RepoInfoInfoFragment()
+        fun newInstance(repo: GithubRepository?, user: GithubUser?): RepoInfoFragment {
+            val repoFragment = RepoInfoFragment()
             val bundle = Bundle()
             bundle.putParcelable("USER" , user)
             bundle.putParcelable("REPO" , repo)
@@ -29,7 +32,9 @@ class RepoInfoInfoFragment : MvpAppCompatFragment(), RepoInfoView, BackButtonLis
     }
 
 
-    val presenter: RepoInfoPresenter by moxyPresenter { RepoInfoPresenter(App.instance.router)}
+    val presenter: RepoInfoPresenter by moxyPresenter { RepoInfoPresenter().apply {
+        App.instance.appComponent.inject(this)
+    }}
 
 
 

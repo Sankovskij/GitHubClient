@@ -1,19 +1,34 @@
 package geek.libraris.githubclient.repos.presenter
 
 import geek.libraris.githubclient.common.Screens
+import geek.libraris.githubclient.common.room.Database
 import geek.libraris.githubclient.repos.model.entity.GithubRepository
 import geek.libraris.githubclient.repos.model.retrofit.IGithubUserRepos
 import geek.libraris.githubclient.repos.presenter.list.IRepoListPresenter
 import geek.libraris.githubclient.repos.presenter.list.RepoItemView
 import geek.libraris.githubclient.users.model.entity.GithubUser
 import geek.libraris.githubclient.repos.views.ReposView
+import geek.libraris.githubclient.users.model.retrofit.IGithubUsersRepo
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 @InjectViewState
-class ReposPresenter(val mainThreadScheduler: Scheduler, val router: Router, val githubUser: GithubUser?, val reposRepo: IGithubUserRepos) : MvpPresenter<ReposView>()  {
+class ReposPresenter(val githubUser: GithubUser?) : MvpPresenter<ReposView>()  {
+
+    @Inject
+    lateinit var mainThreadScheduler: Scheduler
+    @Inject
+    lateinit var reposRepo: IGithubUserRepos
+    @Inject
+    lateinit var database: Database
+    @Inject
+    lateinit var router: Router
+
+
+
 
     class ReposListPresenter : IRepoListPresenter {
         val repos = mutableListOf<GithubRepository>()
