@@ -17,7 +17,6 @@ import geek.libraris.githubclient.users.ui.UsersRVAdapter
 interface UserSubcomponent {
         fun repositorySubcomponent(): RepositorySubcomponent
         fun inject(usersPresenter: UsersPresenter)
-        fun inject(usersRVAdapter: UsersRVAdapter)
 
 
 
