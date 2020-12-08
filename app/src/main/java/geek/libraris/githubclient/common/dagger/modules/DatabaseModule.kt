@@ -1,4 +1,4 @@
-package geek.libraris.githubclient.common.dagger
+package geek.libraris.githubclient.common.dagger.modules
 
 import androidx.room.Room
 import dagger.Module
@@ -8,7 +8,7 @@ import geek.libraris.githubclient.common.room.*
 import javax.inject.Singleton
 
 @Module
-class CacheModule {
+class DatabaseModule {
 
     @Singleton
     @Provides
@@ -16,12 +16,4 @@ class CacheModule {
         .build()
 
 
-    @Singleton
-    @Provides
-    fun usersCache(): IUserCache = RoomUserCache()
-
-
-@Singleton
-@Provides
-fun reposCache(): IRepositoriesCache = RoomRepositoriesCache()
 }

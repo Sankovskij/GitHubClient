@@ -12,6 +12,7 @@ import geek.libraris.githubclient.repos.presenter.ReposPresenter
 import geek.libraris.githubclient.repos.views.ReposView
 import geek.libraris.githubclient.App
 import geek.libraris.githubclient.common.BackButtonListener
+import geek.libraris.githubclient.common.dagger.RepositorySubcomponent
 import geek.libraris.githubclient.common.network.AndroidNetworkStatus
 import geek.libraris.githubclient.common.room.Database
 import geek.libraris.githubclient.common.room.RoomRepositoriesCache
@@ -33,9 +34,12 @@ class ReposFragment : MvpAppCompatFragment(), ReposView, BackButtonListener {
         }
     }
 
+    var repositorySubcomponent: RepositorySubcomponent? = null
 
-    val presenter: ReposPresenter by moxyPresenter { ReposPresenter(arguments?.getParcelable("USER") as GithubUser?).apply {
-            App.instance.appComponent.inject(this)
+    val presenter: ReposPresenter by moxyPresenter {
+        repositorySubcomponent = App.instance.initRepositorySubcomponent()
+        ReposPresenter(arguments?.getParcelable("USER") as GithubUser?).apply {
+            repositorySubcomponent?.inject(this)
         }
     }
 
@@ -46,13 +50,20 @@ class ReposFragment : MvpAppCompatFragment(), ReposView, BackButtonListener {
 
     override fun init() {
         rv_repos.layoutManager = LinearLayoutManager(context)
-        adapter = ReposRVAdapter(presenter.reposListPresenter)
+        adapter = ReposRVAdapter(presenter.reposListPresenter).apply {
+        }
         rv_repos.adapter = adapter
     }
 
     override fun updateList() {
         adapter?.notifyDataSetChanged()
     }
+
+    override fun release() {
+        repositorySubcomponent = null
+        App.instance.releaseRepositorySubcomponent()
+    }
+
 
     override fun backPressed() = presenter.backPressed()
 }

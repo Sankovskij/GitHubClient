@@ -1,4 +1,4 @@
-package geek.libraris.githubclient.common.dagger
+package geek.libraris.githubclient.common.dagger.modules
 
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson

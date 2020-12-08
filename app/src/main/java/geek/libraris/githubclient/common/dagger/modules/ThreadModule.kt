@@ -1,4 +1,4 @@
-package geek.libraris.githubclient.common.dagger
+package geek.libraris.githubclient.common.dagger.modules
 
 import dagger.Module
 import dagger.Provides

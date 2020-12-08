@@ -11,6 +11,8 @@ import geek.libraris.githubclient.users.model.retrofit.UsersApiHolder
 import geek.libraris.githubclient.users.presenter.UsersPresenter
 import geek.libraris.githubclient.App
 import geek.libraris.githubclient.common.BackButtonListener
+import geek.libraris.githubclient.common.dagger.RepositorySubcomponent
+import geek.libraris.githubclient.common.dagger.UserSubcomponent
 import geek.libraris.githubclient.users.views.UsersView
 import geek.libraris.githubclient.common.glide.GlideImageLoader
 import geek.libraris.githubclient.common.network.AndroidNetworkStatus
@@ -28,9 +30,12 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         fun newInstance() = UsersFragment()
     }
 
+    var userSubcomponent: UserSubcomponent? = null
+
     val presenter: UsersPresenter by moxyPresenter {
+        userSubcomponent = App.instance.initUserSubcomponent()
         UsersPresenter().apply {
-            App.instance.appComponent.inject(this)
+            userSubcomponent?.inject(this)
         }
     }
 
@@ -41,12 +46,19 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun init() {
         rv_users.layoutManager = LinearLayoutManager(context)
-        adapter = UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader())
+        adapter = UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader()).apply {
+            userSubcomponent?.inject(this)
+        }
         rv_users.adapter = adapter
     }
 
     override fun updateList() {
         adapter?.notifyDataSetChanged()
+    }
+
+    override fun release() {
+        userSubcomponent = null
+        App.instance.releaseUserSubcomponent()
     }
 
     override fun backPressed() = presenter.backPressed()

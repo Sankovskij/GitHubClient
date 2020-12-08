@@ -16,18 +16,19 @@ import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 @InjectViewState
-class ReposPresenter(val githubUser: GithubUser?) : MvpPresenter<ReposView>()  {
+class ReposPresenter(val githubUser: GithubUser?) : MvpPresenter<ReposView>() {
 
     @Inject
     lateinit var mainThreadScheduler: Scheduler
+
     @Inject
     lateinit var reposRepo: IGithubUserRepos
+
     @Inject
     lateinit var database: Database
+
     @Inject
     lateinit var router: Router
-
-
 
 
     class ReposListPresenter : IRepoListPresenter {
@@ -51,7 +52,7 @@ class ReposPresenter(val githubUser: GithubUser?) : MvpPresenter<ReposView>()  {
 
         reposListPresenter.itemClickListener = { itemView ->
             val repo = reposListPresenter.repos[itemView.pos]
-            router.navigateTo(Screens.RepoInfoScreen(githubUser , repo))
+            router.navigateTo(Screens.RepoInfoScreen(githubUser, repo))
             //переход на новый экран
         }
     }
@@ -66,12 +67,15 @@ class ReposPresenter(val githubUser: GithubUser?) : MvpPresenter<ReposView>()  {
             }, {
                 println("Error: ${it.message}")
             })
-
-
     }
 
-        fun backPressed(): Boolean {
-            router.exit()
-            return true
-        }
+    fun backPressed(): Boolean {
+        router.exit()
+        return true
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewState.release()
+    }
+}
