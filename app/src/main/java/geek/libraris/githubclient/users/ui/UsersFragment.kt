@@ -46,7 +46,10 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun init() {
         rv_users.layoutManager = LinearLayoutManager(context)
-        adapter = UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader())
+        adapter = UsersRVAdapter(presenter.usersListPresenter).apply {
+            App.instance.appComponent.inject(this)
+
+        }
         rv_users.adapter = adapter
     }
 
