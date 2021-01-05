@@ -10,24 +10,35 @@ import geek.libraris.githubclient.common.room.Database
 import geek.libraris.githubclient.main.views.MainView
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import java.lang.RuntimeException
+import javax.inject.Inject
 
 class MainActivity : MvpAppCompatActivity(), MainView {
 
-    val navigatorHolder = App.instance.navigatorHolder
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
+
     val navigator = SupportAppNavigator(this, supportFragmentManager, R.id.container)
 
-    val presenter: MainPresenter by moxyPresenter { MainPresenter(App.instance.router) }
+    val presenter: MainPresenter by moxyPresenter  {
+        MainPresenter().apply {
+            App.instance.appComponent.inject(this)
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        try {
+        App.instance.appComponent.inject(this)
+
+       /* try {
             Database.getInstance()
         } catch (e : RuntimeException) {
             Database.create(applicationContext)
-        }
+        }*/
     }
 
     override fun onResumeFragments() {
