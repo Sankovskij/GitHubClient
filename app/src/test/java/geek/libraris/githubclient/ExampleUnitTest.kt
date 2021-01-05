@@ -1,4 +1,4 @@
-package geek.libraris.mvptest
+package geek.libraris.githubclient
 
 import org.junit.Test
 
